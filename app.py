@@ -207,10 +207,13 @@ if uploaded_file is not None:
         nutrition_row = nutrition_df[nutrition_df[food_col] == dish]
 
         if len(nutrition_row) != 0:
-            cal = (nutrition_row.iloc[0][1] * weight) / 100
-            prot = (nutrition_row.iloc[0][2] * weight) / 100
-            carbs = (nutrition_row.iloc[0][3] * weight) / 100
-            fat = (nutrition_row.iloc[0][4] * weight) / 100
+            row = nutrition_row.iloc[0]
+        row = nutrition_row.iloc[0]
+
+        cal = (row["calories_per_100g"] * weight) / 100
+        prot = (row["protein_per_100g"] * weight) / 100
+        carbs = (row["carbohydrates_per_100g"] * weight) / 100
+        fat = (row["fat_per_100g"] * weight) / 100
         else:
             cal, prot, carbs, fat = 0, 0, 0, 0
 
