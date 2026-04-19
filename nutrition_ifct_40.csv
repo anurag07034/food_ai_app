@@ -1,0 +1,41 @@
+food_name,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g
+aloo gobi,120,3,18,4
+aloo paratha,290,6,45,9
+anda curry,150,10,5,11
+biryani,180,6,28,5
+chaas,40,2,4,2
+chana masala,164,8,27,3
+chapati,297,9,55,3
+chicken pizza,266,11,33,10
+chicken wings,203,30,0,8
+chole bhature,350,10,45,15
+dabeli,250,6,35,10
+dal khichdi,130,4,22,3
+dhokla,160,6,30,3
+falooda,200,3,35,5
+fish curry,140,18,3,6
+garlic bread,350,9,45,15
+garlic naan,310,8,50,8
+grilled sandwich,260,8,30,12
+gulab jamun,385,5,50,18
+hara bhara kabab,180,6,20,8
+idli,130,4,28,1
+jalebi,380,3,65,12
+kulfi,210,4,25,10
+margherita pizza,270,11,33,10
+masala dosa,220,5,30,8
+masala papad,150,5,20,5
+palak paneer,190,8,8,14
+paneer masala,260,12,10,20
+paneer pizza,280,12,30,12
+papdi chaat,250,6,35,10
+pav bhaji,220,5,30,8
+poha,180,4,30,5
+rasgulla,186,3,40,1
+rava dosa,230,5,35,8
+samosa,262,6,24,17
+seekh kebab,250,18,3,20
+steamed momo,180,7,28,4
+thali,200,6,25,8
+uttapam,210,5,32,7
+vada pav,290,7,38,14
