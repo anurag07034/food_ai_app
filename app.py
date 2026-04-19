@@ -27,7 +27,14 @@ with open("class_names.json", "r") as f:
 
 nutrition_df = pd.read_csv("nutrition_ifct_40.csv")
 nutrition_df.columns = nutrition_df.columns.str.lower().str.strip()
-food_col = "food_name" if "food_name" in nutrition_df.columns else nutrition_df.columns[0]
+
+# Auto-detect columns safely
+food_col = nutrition_df.columns[0]
+cal_col = nutrition_df.columns[1]
+prot_col = nutrition_df.columns[2]
+carb_col = nutrition_df.columns[3]
+fat_col = nutrition_df.columns[4]
+
 nutrition_df[food_col] = nutrition_df[food_col].str.lower().str.strip()
 
 # -----------------------------
@@ -170,8 +177,11 @@ if uploaded_file is not None:
 
     for mask in final_masks:
         depth_vals = depth_map[mask == 1]
-        volume = (mask.sum() ** 1.05) * (np.mean(depth_vals) + 0.1)
-        volumes.append(volume)
+        if len(depth_vals) == 0:
+            volumes.append(0)
+        else:
+            volume = (mask.sum() ** 1.05) * (np.mean(depth_vals) + 0.1)
+            volumes.append(volume)
 
     total_volume = sum(volumes)
     total_plate_weight = 250 + ((total_food_pixels / (img.shape[0]*img.shape[1])) * 350)
@@ -187,9 +197,12 @@ if uploaded_file is not None:
 
     for i, mask in enumerate(final_masks):
 
-        weight = ((volumes[i]+1e-6)/(total_volume+1e-6)) * total_plate_weight
+        weight = ((volumes[i] + 1e-6) / (total_volume + 1e-6)) * total_plate_weight
 
         ys, xs = np.where(mask == 1)
+        if len(xs) == 0 or len(ys) == 0:
+            continue
+
         x_min, x_max = xs.min(), xs.max()
         y_min, y_max = ys.min(), ys.max()
 
@@ -207,15 +220,15 @@ if uploaded_file is not None:
         nutrition_row = nutrition_df[nutrition_df[food_col] == dish]
 
         if len(nutrition_row) != 0:
-    row = nutrition_row.iloc[0]
+            row = nutrition_row.iloc[0]
 
-    cal = (row["calories"] * weight) / 100
-    prot = (row["protein"] * weight) / 100
-    carbs = (row["carbohydrates"] * weight) / 100
-    fat = (row["fat"] * weight) / 100
+            cal = (row[calories_per_100g] * weight) / 100
+            prot = (row[protein_per_100g] * weight) / 100
+            carbs = (row[carbs_per_100g] * weight) / 100
+            fat = (row[fat_per_100g] * weight) / 100
+        else:
+            cal, prot, carbs, fat = 0, 0, 0, 0
 
-else:
-    cal, prot, carbs, fat = 0, 0, 0, 0
         total_cal += cal
         total_prot += prot
         total_carbs += carbs
@@ -232,9 +245,6 @@ else:
             **Fat:** {fat:.1f} g  
             """)
 
-    # -----------------------------
-    # TOTAL + PIE CHART
-    # -----------------------------
     st.success(f"🔥 Total Calories: {total_cal:.1f} kcal")
 
     st.subheader("🥧 Macronutrient Distribution")
@@ -245,5 +255,4 @@ else:
         labels=["Protein", "Carbs", "Fat"],
         autopct='%1.1f%%'
     )
-
     st.pyplot(fig)
