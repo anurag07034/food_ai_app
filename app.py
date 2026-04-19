@@ -28,13 +28,7 @@ with open("class_names.json", "r") as f:
 nutrition_df = pd.read_csv("nutrition_ifct_40.csv")
 nutrition_df.columns = nutrition_df.columns.str.lower().str.strip()
 
-# Auto-detect columns safely
 food_col = nutrition_df.columns[0]
-cal_col = nutrition_df.columns[1]
-prot_col = nutrition_df.columns[2]
-carb_col = nutrition_df.columns[3]
-fat_col = nutrition_df.columns[4]
-
 nutrition_df[food_col] = nutrition_df[food_col].str.lower().str.strip()
 
 # -----------------------------
@@ -219,13 +213,14 @@ if uploaded_file is not None:
 
         nutrition_row = nutrition_df[nutrition_df[food_col] == dish]
 
+        # ✅ FINAL FIXED BLOCK (NO ERRORS)
         if len(nutrition_row) != 0:
             row = nutrition_row.iloc[0]
 
-            cal = (row[calories_per_100g] * weight) / 100
-            prot = (row[protein_per_100g] * weight) / 100
-            carbs = (row[carbs_per_100g] * weight) / 100
-            fat = (row[fat_per_100g] * weight) / 100
+            cal = (row.iloc[1] * weight) / 100
+            prot = (row.iloc[2] * weight) / 100
+            carbs = (row.iloc[3] * weight) / 100
+            fat = (row.iloc[4] * weight) / 100
         else:
             cal, prot, carbs, fat = 0, 0, 0, 0
 
